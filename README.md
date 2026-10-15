@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# POC Starter
 
-## Getting Started
+Base de départ pour produire des POC clients beaux et hébergés, avec Claude Code.
 
-First, run the development server:
+Exemple fourni : "Pilotage chantiers" pour un client fictif de rénovation énergétique, avec un tableau de bord, une liste de dossiers filtrable avec panneau de détail, et un assistant IA en streaming.
+
+## Démarrer en local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Puis ouvrir http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Pour activer la vraie IA, copier `.env.example` en `.env.local` et renseigner `ANTHROPIC_API_KEY`. Sans clé, l'assistant renvoie des réponses simulées réalistes : la démo fonctionne toujours.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Créer un nouveau POC
 
-## Learn More
+1. Sur GitHub, ouvrir ce repo puis "Use this template" pour créer `poc-nom-du-client`.
+2. Cloner le nouveau repo et l'ouvrir dans VS Code.
+3. Remplir `docs/BRIEF.md` à partir de `docs/PROMPT_POC.md`.
+4. Dans Claude Code, taper `/nouveau-poc` : Claude lit le brief, habille l'app aux couleurs du client et construit les écrans.
+5. Vérifier sur http://localhost:3000, corriger au fil de l'eau.
 
-To learn more about Next.js, take a look at the following resources:
+## Mettre en ligne sur Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Sur vercel.com, "Add New Project" puis importer le repo GitHub. Aucun réglage nécessaire.
+2. Si le POC utilise l'IA : ajouter `ANTHROPIC_API_KEY` dans Settings, Environment Variables.
+3. Chaque `git push` met le site à jour. Chaque branche a sa propre URL de preview.
+4. Astuce : renommer le domaine en `nom-du-client-galadrim.vercel.app` dans Settings, Domains.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  styles/theme.css     couleurs et formes (habillage client)
+  config/brand.ts      nom du client, de l'app, logo, navigation
+  data/                données de démo
+  components/ui/       Button, Card, Badge, Input
+  components/layout/   barre latérale, en têtes de page
+  app/                 une page par écran
+  app/api/assistant/   route IA (Claude, avec mode simulé)
+docs/PROMPT_POC.md     modèle de brief
+.claude/commands/      commandes Claude Code (/nouveau-poc, /habiller-client, /verifier)
+CLAUDE.md              règles lues automatiquement par Claude Code
+```

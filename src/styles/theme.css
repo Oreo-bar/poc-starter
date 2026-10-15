@@ -1,0 +1,48 @@
+/*
+  THEME DE MARQUE
+  C'est le seul fichier à modifier pour habiller le POC aux couleurs d'un client.
+  Par défaut : charte Galadrim v2 (fond crème, noir chaud, vert action, pastels).
+  Pour un client : remplacer les valeurs ci-dessous par sa palette (logo, site, charte).
+*/
+
+:root {
+  /* Surfaces */
+  --background: #f8f5f1;       /* fond de page */
+  --surface: #ffffff;          /* cartes, panneaux */
+  --surface-muted: #f1ede7;    /* zones secondaires, survols */
+
+  /* Texte */
+  --foreground: #262524;
+  --muted-foreground: #7a7875;
+
+  /* Couleur d'action (boutons principaux, liens, chiffre clé). Une seule par écran. */
+  --primary: #528361;
+  --primary-foreground: #ffffff;
+
+  /* Barre latérale */
+  --sidebar: #262524;
+  --sidebar-foreground: #f8f5f1;
+  --sidebar-muted: rgba(248, 245, 241, 0.55);
+  --sidebar-active: rgba(248, 245, 241, 0.1);
+
+  /* Filets et focus */
+  --border: #e3e3e3;
+  --ring: #528361;
+
+  /* Pastels d'accompagnement (fonds de badges, cartes, surlignages) */
+  --pastel-green: #dbffc7;
+  --pastel-blue: #c7f6ff;
+  --pastel-violet: #d8c7ff;
+  --pastel-orange: #ffeac7;
+  --pastel-red: #ffc7c7;
+  --pastel-yellow: #ffffc7;
+
+  /* Séries de graphiques, dans l'ordre d'utilisation */
+  --chart-1: #262524;
+  --chart-2: #528361;
+  --chart-3: #9a9a9a;
+  --chart-4: #e8784a;
+
+  /* Formes */
+  --radius: 4px;
+}

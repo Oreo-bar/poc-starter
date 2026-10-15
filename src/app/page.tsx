@@ -1,69 +1,144 @@
-import Image from "next/image";
+import Link from "next/link";
+import { AlertTriangle, ArrowRight, CheckCircle2, Info, Plus } from "lucide-react";
+import { PageContainer, PageHeader } from "@/components/layout/page-header";
+import { KpiCard } from "@/components/kpi-card";
+import { RevenueChart } from "@/components/charts/revenue-chart";
+import { StatusBadge } from "@/components/status-badge";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { activiteRecente, dossiers, evolutionMensuelle, kpis, statuts } from "@/data/demo";
+import { brand } from "@/config/brand";
+import { cn, formatEuro } from "@/lib/utils";
 
-export default function Home() {
+const activiteIcon = {
+  info: <Info className="size-4 text-muted-foreground" />,
+  succes: <CheckCircle2 className="size-4 text-primary" />,
+  alerte: <AlertTriangle className="size-4 text-chart-4" />,
+};
+
+export default function DashboardPage() {
+  const prioritaires = dossiers.filter((d) => d.priorite === "Haute" && d.statut !== "Terminé");
+  const parStatut = statuts.map((s) => ({
+    statut: s,
+    count: dossiers.filter((d) => d.statut === s).length,
+    total: dossiers.filter((d) => d.statut === s).reduce((acc, d) => acc + d.montant, 0),
+  }));
+  const max = Math.max(...parStatut.map((s) => s.total));
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <PageContainer>
+      <PageHeader
+        overline={brand.tagline}
+        title={`Bonjour ${brand.user.name.split(" ")[0]}`}
+        description="Vue d'ensemble de l'activité commerciale et des chantiers en cours."
+        actions={
+          <>
+            <Button variant="secondary">Exporter</Button>
+            <Button>
+              <Plus /> Nouveau dossier
+            </Button>
+          </>
+        }
+      />
+
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {kpis.map((k, i) => (
+          <div key={k.label} className="animate-in-up" style={{ animationDelay: `${i * 60}ms` }}>
+            <KpiCard {...k} inverse={k.format === "days"} className="h-full" />
+          </div>
+        ))}
+      </section>
+
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <Card className="xl:col-span-2">
+          <CardHeader
+            overline="6 derniers mois"
+            title="Chiffre d'affaires signé"
+            action={
+              <div className="hidden items-center gap-4 text-[13px] text-muted-foreground sm:flex">
+                <span className="flex items-center gap-2">
+                  <span className="h-0.5 w-4 bg-chart-2" /> Signé
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="h-0 w-4 border-t border-dashed border-chart-3" /> Pipeline
+                </span>
+              </div>
+            }
+          />
+          <CardContent>
+            <RevenueChart data={evolutionMensuelle} />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader overline="Répartition" title="Dossiers par étape" />
+          <CardContent className="space-y-4">
+            {parStatut.map((s) => (
+              <div key={s.statut} className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <StatusBadge statut={s.statut} />
+                  <span className="text-muted-foreground">
+                    {s.count} dossier{s.count > 1 ? "s" : ""} · <span className="text-foreground">{formatEuro(s.total)}</span>
+                  </span>
+                </div>
+                <div className="h-1.5 rounded-full bg-surface-muted">
+                  <div className="h-full rounded-full bg-foreground" style={{ width: `${(s.total / max) * 100}%` }} />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <Card className="xl:col-span-2">
+          <CardHeader
+            overline="À traiter en priorité"
+            title="Dossiers prioritaires"
+            action={
+              <Link href="/dossiers" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
+                Tout voir <ArrowRight />
+              </Link>
+            }
+          />
+          <CardContent className="px-0 pb-2">
+            <ul className="divide-y divide-border">
+              {prioritaires.map((d) => (
+                <li key={d.id} className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="flex items-center gap-2">
+                      <span className="eyebrow text-muted-foreground">{d.id}</span>
+                      <span className="font-medium">{d.client}</span>
+                    </p>
+                    <p className="mt-1 truncate text-sm text-muted-foreground">{d.note}</p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-3">
+                    <span className="text-sm font-medium">{formatEuro(d.montant)}</span>
+                    <StatusBadge statut={d.statut} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader overline="Temps réel" title="Activité récente" />
+          <CardContent>
+            <ol className="space-y-5">
+              {activiteRecente.map((a) => (
+                <li key={a.quoi} className="flex gap-3">
+                  <span className="mt-0.5">{activiteIcon[a.type]}</span>
+                  <div>
+                    <p className="text-[15px] leading-snug">{a.quoi}</p>
+                    <p className="eyebrow mt-1.5 text-[10px] text-muted-foreground">{a.quand}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </CardContent>
+        </Card>
+      </section>
+    </PageContainer>
   );
 }
