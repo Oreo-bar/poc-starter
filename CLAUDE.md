@@ -14,6 +14,12 @@ Ce repo sert de base à tous les POC clients. Chaque POC est une vraie app web, 
 6. IA : `@anthropic-ai/sdk` côté serveur uniquement (route handlers), avec une réponse simulée quand `ANTHROPIC_API_KEY` est absente pour que la démo marche toujours.
 7. Pas de base de données par défaut : les données de démo vivent dans `src/data/`. Supabase seulement si le POC doit vraiment persister des données.
 
+## Composants shadcn/ui (MCP)
+
+1. Le serveur MCP shadcn est déclaré dans `.mcp.json` : il permet de chercher et d'installer des composants et des blocs (tableaux, panneaux, calendriers, palettes de commandes...).
+2. Toujours préférer un composant shadcn existant à un composant recodé à la main, puis l'adapter au thème.
+3. Les composants installés vont dans `src/components/ui`. Ne jamais écraser `globals.css` ni `theme.css` lors d'une installation : les alias de couleurs attendus par shadcn sont déjà branchés sur nos tokens.
+
 ## Où modifier quoi
 
 1. `src/styles/theme.css` : couleurs, rayon des angles. C'est le fichier à changer pour habiller le POC aux couleurs du client.

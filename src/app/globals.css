@@ -18,6 +18,18 @@
   --color-sidebar-active: var(--sidebar-active);
   --color-border: var(--border);
   --color-ring: var(--ring);
+  /* Alias attendus par les composants shadcn/ui, branchés sur les tokens du thème */
+  --color-card: var(--surface);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--foreground);
+  --color-secondary: var(--surface-muted);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--surface-muted);
+  --color-input: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent: var(--surface-muted);
+  --color-accent-foreground: var(--foreground);
   --color-pastel-green: var(--pastel-green);
   --color-pastel-blue: var(--pastel-blue);
   --color-pastel-violet: var(--pastel-violet);

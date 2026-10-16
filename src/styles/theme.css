@@ -25,6 +25,9 @@
   --sidebar-muted: rgba(248, 245, 241, 0.55);
   --sidebar-active: rgba(248, 245, 241, 0.1);
 
+  /* Action destructrice (suppression, erreur) */
+  --destructive: #b4483a;
+
   /* Filets et focus */
   --border: #e3e3e3;
   --ring: #528361;
